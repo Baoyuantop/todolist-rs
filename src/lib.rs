@@ -2,12 +2,13 @@ use wasm_bindgen::prelude::*;
 use yew::prelude::*;
 use yew::{html, InputData};
 use yew::events::KeyboardEvent;
-#[derive(Debug,Clone)]
+
+#[derive(Debug,Clone, PartialEq, Eq)]
 enum ListStatus {
   Todo,
   Done,
 }
-#[derive(Debug,Clone)]
+#[derive(Debug,Clone, PartialEq, Eq)]
 struct List {
   content: String,
   status: ListStatus,
@@ -25,7 +26,7 @@ struct Model {
 
 enum Msg {
     AddOne,
-    ReduceOne(String),
+    ReduceOne(usize),
     InputText(String),
     Null
 }
@@ -58,9 +59,8 @@ impl Component for Model {
               self.state.list.push(new_todo);
               self.state.cur_input = "".to_string();
             },
-            Msg::ReduceOne(text) => {
-              let index = self.state.list.iter().position(|x| x.content == text).unwrap();
-              self.state.list.remove(0);
+            Msg::ReduceOne(index) => {
+              self.state.list.remove(index);
             }
             Msg::InputText(text ) => {
               self.state.cur_input = text;
@@ -87,7 +87,7 @@ impl Component for Model {
                 </div>
                 <div class="content">
                   <ul>
-                    {self.state.list.iter().map(|item| self.todo_item(item)).collect::<Html>()}
+                    {self.state.list.iter().enumerate().map(|(i, item)| self.todo_item(i, item)).collect::<Html>()}
                     <li class="list-item list-item-input">
                       <input
                         class="input"
@@ -118,11 +118,11 @@ impl Component for Model {
 }
 
 impl Model {
-  fn todo_item(&self, list: &List) -> Html {
+  fn todo_item(&self, index: usize, list: &List) -> Html {
     html! {
-      <li class="list-item">
+      <li class="list-item" >
         {list.content.to_string()}
-        <button class="button-delete" onclick=self.link.callback(|_| Msg::ReduceOne(list.content))>{"Delete"}</button>
+        <button class="button-delete" onclick=self.link.callback(move |_| Msg::ReduceOne(index))>{"Delete"}</button>
       </li>
     }
   }
