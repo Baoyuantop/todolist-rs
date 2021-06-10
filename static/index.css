@@ -12,6 +12,7 @@ body {
   font-size: 22px;
   color: #fff;
   font-weight: 200;
+  padding-left: 20px;
 }
 .body {
   display: flex;
