@@ -19,8 +19,11 @@ Then use a service like [serve](https://www.npmjs.com/package/serve) to host fil
 
 ## Todo
 
-- [ ] todo and done status
-- [ ] storage
+- [x] todo and done status
+- [x] storage
+- [ ] Compatible with mobile devices
+- [ ] More useful information
+...
 
 
 ### Contributors
